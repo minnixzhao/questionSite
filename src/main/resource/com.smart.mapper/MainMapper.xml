@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smart.dao.MainDao">
+    <resultMap id="mainResultMapper" type="main">
+        <id property="mainId" column="mainId"/>
+        <result property="mainTitle" column="mainTitle"/>
+        <result property="mainIsuse" column="mainIsuse"/>
+        <result property="mainCreateTime" column="mainCreateTime"/>
+        <result property="mainEndTime" column="mainEndTime"/>
+        <result property="mainCreateUser" column="mainCreateUser"/>
+        <result property="mainAnswer" column="mainAnswer"/>
+        <!--一个问卷对应多个问题-->
+        <collection property="questionList" ofType="question">
+            <id property="quesId" column="quesId"/>
+            <result property="quesTitle" column="quesTitle"/>
+            <result property="quesCreateTime" column="quesCreateTime"/>
+            <result property="quesType" column="quesType"/>
+            <!--一个问题对应多个答案-->
+            <collection property="answerList" ofType="answer">
+                <id property="answerId" column="answerId"/>
+                <result property="answerValue" column="answerValue"/>
+                <result property="answerType" column="answerType"/>
+                <result property="answerDesType" column="answerDesType"/>
+                <result property="answerText" column="answerText"/>
+                <result property="answerCreateTime" column="answerCreateTime"/>
+            </collection>
+        </collection>
+    </resultMap>
+    <!--查询问卷总数(所有)-->
+    <select id="selectMainCount" resultType="Integer">
+        select count(*) from qu_main
+    </select>
+    <!--查询问卷总数(已发布)-->
+    <select id="selectMainCount1" resultType="Integer">
+        select count(*) from qu_main where mainIsuse='y'
+    </select>
+    <!--查询问卷总数(通过mainTitle模糊查询)-->
+    <select id="selectMainCount2" resultType="Integer">
+        select count(*) from qu_main
+        where mainTitle like concat(concat('%',#{mainTitle}),'%')
+        and mainCreateTime between #{mainCreateTime} and #{mainEndTime}
+        and mainEndTime between #{mainCreateTime} and #{mainEndTime}
+    </select>
+    <!--查询问卷总记录数(我的)-->
+    <select id="selectMainCount3" parameterType="user" resultType="Integer">
+        select count(*) from qu_main
+        where mainCreateUser=#{userName}
+    </select>
+    <!--查询分页问卷(所有)-->
+    <select id="selectMainByPage" parameterType="Map" resultMap="mainResultMapper">
+        select * from qu_main
+        order by mainCreateTime desc
+        <if test="start!=null and size!=null">
+            limit #{start},#{size}
+        </if>
+    </select>
+    <!--查询分页问卷(已发布)-->
+    <select id="selectMainByPage1" parameterType="Map" resultMap="mainResultMapper">
+        select * from qu_main
+        where mainIsuse='y'
+        order by mainCreateTime desc
+        <if test="start!=null and size!=null">
+            limit #{start},#{size}
+        </if>
+    </select>
+    <!--通过mainTitle分页模糊查询-->
+    <select id="selectMainByTitle" parameterType="Map" resultMap="mainResultMapper">
+        select * from qu_main
+        where mainTitle like concat(concat('%',#{mainTitle}),'%') and
+              mainCreateTime between #{mainCreateTime} and #{mainEndTime}
+        and mainEndTime between #{mainCreateTime} and #{mainEndTime}
+        order by mainCreateTime desc
+        <if test="start!=null and size!=null">
+            limit #{start},#{size}
+        </if>
+
+    </select>
+    <!--查询当前页的问卷数据(我的)-->
+    <select id="selectMainByPageAndUser" parameterType="Map" resultMap="mainResultMapper">
+        select * from qu_main
+        where mainCreateUser=#{user.userName}
+        order by mainCreateTime desc
+        <if test="start!=null and size!=null">
+            limit #{start},#{size}
+        </if>
+
+    </select>
+    <!--查询qu_user_main表，判断用户是否问卷-->
+    <select id="isTrueAnswer" parameterType="Integer" resultType="Integer">
+        select umId from qu_user_main where  user_id=#{userId} and main_id=#{mainId}
+    </select>
+    <!--查询问卷信息包括question,answer-->
+    <select id="selectMainById" parameterType="Integer" resultMap="mainResultMapper">
+        select * from qu_main m,qu_question q,qu_answer a
+        where m.mainId=#{mainId} and m.mainId=q.main_id and q.quesId=a.ques_id
+        order by field(q.quesType,'radio','check')
+    </select>
+    <!--查询问卷信息包括question,answer-->
+    <select id="selectMainById1" parameterType="Integer" resultMap="mainResultMapper">
+        select * from qu_main m
+        where m.mainId=#{mainId}
+    </select>
+    <!--获取问卷额外信息-->
+    <select id="selectMessage" parameterType="Integer" resultType="message">
+        select * from qu_message where main_id=#{mainId}
+    </select>
+    <!--增加问卷额外信息-->
+    <insert id="insertMessage" >
+        insert into qu_message(messageText,messageCreater,messageCreateTime,main_id)
+               values (#{message1.messageText},#{message1.messageCreater},#{message1.messageCreateTime},#{main.mainId})
+    </insert>
+    <!--增加用户已作答-->
+    <insert id="insertAlreadyApply" >
+        insert into qu_user_main (main_id,user_id) values (#{mainId},#{userId});
+    </insert>
+    <!--实现问卷回答人数自增-->
+    <update id="updateMainAnswer" parameterType="main">
+        update qu_main set mainAnswer=#{mainAnswer} where mainId=#{mainId}
+    </update>
+     <!--新建一份问卷-->
+    <insert id="insertMain" parameterType="main" useGeneratedKeys="true" keyProperty="mainId">
+        insert into qu_main (mainTitle,mainCreateTime,mainIsuse,mainEndTime,mainCreateUser) values (#{mainTitle},#{mainCreateTime},#{mainIsuse},#{mainEndTime},#{mainCreateUser});
+    </insert>
+    <!--修改问卷-->
+    <update id="updateMain" >
+        update qu_main
+        <set >
+        <if test="mainTitle != null" >
+            mainTitle=#{mainTitle},
+        </if>
+        <if test="mainEndTime!=null">
+            mainEndTime=#{mainEndTime},
+        </if>
+            <if test="mainIsuse!=null">
+                mainIsuse=#{mainIsuse},
+            </if>
+        </set>
+         where mainId=#{mainId} ;
+    </update>
+    <!--删除一份问卷-->
+    <delete id="deleteMain" parameterType="Integer">
+        delete from qu_main where mainId=#{mainId}
+    </delete>
+
+</mapper>

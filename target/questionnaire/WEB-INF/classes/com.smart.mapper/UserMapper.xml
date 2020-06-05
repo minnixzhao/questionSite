@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smart.dao.UserDao">
+    <resultMap id="userResultMapper" type="user">
+        <id column="userId" property="userId"/>
+        <result column="password" property="password"/>
+        <result column="loginName" property="loginName"/>
+        <result column="userName" property="userName"/>
+        <result column="email" property="email"/>
+        <result column="salt" property="salt"/>
+        <!--一个用户对应多份问卷-->
+        <collection  property="main" ofType="main">
+            <id column="mainId" property="mainId"/>
+            <result column="mainTitle" property="mainTitle"/>
+            <result column="mainCreateTime" property="mainCreateTime"/>
+            <result column="mainEndTime" property="mainEndTime"/>
+            <result column="mainCreateUser" property="mainCreateUser"/>
+            <result column="mainAnswer" property="mainAnswer"/>
+        </collection>
+        <!--一个用户对应多个角色-->
+        <collection property="roleList" ofType="role">
+            <id column="roleId" property="roleId"/>
+            <result column="roleName" property="roleName"/>
+            <result column="roleDes" property="roleDes"/>
+            <result column="pId" property="pId"/>
+            <result column="avaliable" property="avaliable"/>
+            <!--一个角色对应多个权限-->
+            <collection property="permissionList" ofType="permission">
+                <id column="permissId" property="permissId"/>
+                <result column="permissName" property="permissName"/>
+                <result column="permissDes" property="permissDes"/>
+                <result column="pId" property="pId"/>
+                <result column="avaliable" property="avaliable"/>
+            </collection>
+        </collection>
+    </resultMap>
+    <!--通过loginName获取user-->
+    <select id="selectUserByLoginName" parameterType="String" resultType="user">
+        select * from sys_user where loginName=#{loginName};
+    </select>
+    <!--通过loginName获取权限-->
+    <select id="selectPermissionByLoginName" parameterType="String" resultType="String">
+    select p.permissName from sys_role_user ru,sys_role_permiss rp,sys_user u,sys_role r,sys_permiss p
+    where  u.loginName=#{loginName} and userId=user_id and ru.role_id=roleId and rp.role_id=roleId
+           and permissId=permiss_id
+    </select>
+
+    <!--通过loginName获取角色-->
+    <select id="selectRoleByLoginName" parameterType="String" resultType="String">
+        select roleName from sys_user u,sys_role r,sys_role_user ru where u.loginName=#{loginName}
+         and roleId=role_id and userId=user_id
+    </select>
+    <!--查询用户总数(所有)-->
+    <select id="selectUserCount" resultType="Integer">
+        select count(*) from sys_user
+    </select>
+    <!--查询分页用户(所有)-->
+    <select id="selectUserByPage" parameterType="Map" resultMap="userResultMapper">
+        select * from sys_user u ,sys_role_user ru,sys_role r
+        where  u.userId=ru.user_id and ru.role_id=r.roleId
+        <if test="start!=null and size!=null">
+            limit #{start},#{size}
+        </if>
+    </select>
+    <!--插入一个用户--><!--useGeneratedKeys="true"表示主键自动递增，keyProperty表示返回主键复于当前实体对象中-->
+    <insert id="insertUser" parameterType="user" useGeneratedKeys="true" keyProperty="userId">
+        insert into sys_user(loginName,password,userName,email,salt) values(#{loginName},#{password},#{userName},#{email},#{salt})
+    </insert>
+    <!--删除用户-->
+    <delete id="deleteUser" parameterType="Integer">
+        delete from sys_user where userId=#{userId}
+    </delete>
+</mapper>

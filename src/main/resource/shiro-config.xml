@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--shiro的配置-->
+    <!-- 配置自定义Realm -->
+    <bean id="myRealm" class="com.smart.shiro.MyRealm">
+        <!--指定加密算法为MD5-->
+        <property name="credentialsMatcher" >
+            <bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+                <!--加密算法-->
+                <property name="hashAlgorithmName" value="MD5"/>
+                <!--加密次数-->
+                <property name="hashIterations" value="1024"/>
+            </bean>
+        </property>
+    </bean>
+    <!--缓存管理器-->
+    <bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+        <property name="cacheManagerConfigFile" value="classpath:ehcache.xml"/>
+    </bean>
+    <!--安全管理器 -->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="myRealm"/>
+        <property name="sessionMode" value="native" />
+        <property name="cacheManager" ref="cacheManager"/>
+    </bean>
+
+    <!-- Shiro过滤器 核心-->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <!-- Shiro的核心安全接口,这个属性是必须的 -->
+        <property name="securityManager" ref="securityManager"/>
+        <!-- 没身份认证访问路径，则跳转到登录页面,默认返回webapp/login.jsp -->
+        <property name="loginUrl" value="/login.jsp"/>
+        <!--登录成功时，跳转至首页(登录成功后的处理逻辑在LoginController里硬编码是实现)-->
+        <property name="successUrl" value="/WEB-INF/view/index,jsp" />
+        <!-- 权限认证失败，则跳转到指定页面 -->
+        <property name="unauthorizedUrl" value="/noPermit.jsp"/>
+        <!-- Shiro连接约束配置,即过滤链的定义 -->
+        <property name="filterChainDefinitions">
+            <value>
+                /css/**=anon
+                /js/**=anon
+                /images/**=anon
+                <!--获取身份验证路径不需要身份认证,anon表示不需要身份，权限认证-->
+                /user/*=anon
+                <!--authc表示需要认证 没有进行身份认证是不能进行访问的-->
+                /**=authc
+            </value>
+        </property>
+    </bean>
+
+    <!-- 保证实现了Shiro内部lifecycle函数的bean执行 -->
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+
+    <!-- 开启Shiro注解 -->
+    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
+          depends-on="lifecycleBeanPostProcessor"
+          p:proxyTargetClass="true"
+    />
+    <!-- 配置shiro框架提供的切面类，用于创建代理对象 -->
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor"
+          p:securityManager-ref="securityManager"/>
+
+</beans>

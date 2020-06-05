@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smart.dao.AnswerDao">
+    <resultMap id="answerResultMapper" type="answer">
+        <id property="answerId" column="answerId"/>
+        <result property="answerValue" column="answerValue"/>
+        <result property="answerType" column="answerType"/>
+        <result property="answerDesType" column="answerDesType"/>
+        <result property="answerText" column="answerText"/>
+        <result property="answerCreateTime" column="answerCreateTime"/>
+        <!--一个答案对应一个问题-->
+        <association property="question" javaType="question">
+            <id property="quesId" column="quesId"/>
+            <result property="quesTitle" column="quesTitle"/>
+            <result property="quesCreateTime" column="quesCreateTime"/>
+            <result property="quesType" column="quesType"/>
+            <!--一个问题对应一份问卷-->
+            <association property="main" javaType="main">
+                <id property="mainId" column="mainId"/>
+                <result property="mainTitle" column="mainTitle"/>
+                <result property="mainIsuse" column="mainIsuse"/>
+                <result property="mainCreateTime" column="mainCreateTime"/>
+                <result property="mainEndTime" column="mainEndTime"/>
+                <result property="mainCreateUser" column="mainCreateUser"/>
+                <result property="mainAnswer" column="mainAnswer"/>
+            </association>
+        </association>
+    </resultMap>
+    <!--通过answerId查询答案-->
+    <select id="selectAnswerById" parameterType="Integer" resultMap="answerResultMapper">
+        select * from qu_main m,qu_question q,qu_answer a
+        where a.answerId=#{answerId} and m.mainId=q.main_id and q.quesId=a.ques_id;
+    </select>
+    <!--通过quesId获取答案-->
+    <select id="selectAnswerByQuesId" parameterType="Integer" resultMap="answerResultMapper">
+        select * from qu_answer where ques_id=#{quesId}
+    </select>
+    <!--修改答案answerValue字段-->
+    <update id="updateApplyValues" parameterType="answer">
+        update qu_answer set answerValue=#{answerValue} where answerId=#{answerId}
+    </update>
+    <!--插入一份答案-->
+    <insert id="insertAnswer" parameterType="answer" >
+        insert into qu_answer (answerType,answerDesType,answerText,answerCreateTime,ques_id) values (#{answerType},#{answerDesType},#{answerText},#{answerCreateTime},#{question.quesId});
+    </insert>
+    <!--更新答案-->
+    <update id="updateAnswerById" parameterType="answer" >
+        update qu_answer set answerDesType = #{answerDesType} where answerId=#{answerId};
+
+    </update>
+    <!--删除答案-->
+    <delete id="deleteAnswer" parameterType="Integer" >
+        delete from qu_answer where ques_id=#{quesId}
+    </delete>
+</mapper>
