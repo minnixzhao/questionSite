@@ -6,9 +6,8 @@
     <resultMap id="answerResultMapper" type="answer">
         <id property="answerId" column="answerId"/>
         <result property="answerValue" column="answerValue"/>
-        <result property="answerType" column="answerType"/>
         <result property="answerDesType" column="answerDesType"/>
-        <result property="answerText" column="answerText"/>
+        <result property="answerSum" column="answerText"/>
         <result property="answerCreateTime" column="answerCreateTime"/>
         <!--一个答案对应一个问题-->
         <association property="question" javaType="question">

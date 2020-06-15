@@ -40,19 +40,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									<td ><%//答案开始咯 %>
 									<br />
 									<c:forEach items="${question.answerList}" var="answer" varStatus="vs">
-											<c:if test="${answer.answerType eq 'n'}"><%//这里是文字类答案 %>
 												<blockquote>
 													<p style="padding-left: 40px">总共<b>${answer.answerValue }</b>个人选择</p>
 													<footer style="padding-left: 40px"><b>${answer.answerDesType }</b></footer>
 												</blockquote>
-											</c:if>
-											
-											<c:if test="${answer.answerType eq 'y'}"><%//这里是图片类答案 %>
-												<blockquote>
-													<p style="padding-left: 40px">总共<b>${answer.answerValue }</b>个人选择</p>
-													<footer style="padding-left: 40px"><a src="<%=basePath %>${answer.answerText }" >${answer.answerDesType }</a></footer>
-												</blockquote>
-											</c:if>
 
 									</c:forEach>
 										<br />
@@ -120,9 +111,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
 		</table>
 	</div>
-
-	<!--加载尾部-->
-	<jsp:include page="../footer.jsp"/>
 
 	<script type="text/javascript">
 		var basePath = '<%=basePath%>';

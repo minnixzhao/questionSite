@@ -83,7 +83,6 @@ public class MainService {
     }
     //判断用户是否答过问卷
     @Transactional
-    @RequiresRoles(value = "vip",logical = Logical.OR)
     public boolean isTrueAnswer(Integer mainId,Integer userId){
         Integer k=mainDao.isTrueAnswer(mainId,userId);
         //如果查询结果为空，则未答过，否则答过
@@ -106,11 +105,13 @@ public class MainService {
         Map<Integer,Object> counts = new HashMap<>();
         if(main!=null) {
             for (Question question : main.getQuestionList()) {
-                Integer count = 0;
-                for (Answer answer : question.getAnswerList()) {
-                    count = count + answer.getAnswerValue();
-                }
-                counts.put(question.getQuesId(), count);
+                    //System.out.println(question.getQuesType());
+                    Integer count = 0;
+                    for (Answer answer : question.getAnswerList()) {
+                        count = count + answer.getAnswerValue();
+                    }
+                    counts.put(question.getQuesId(), count);
+
             }
         }
         if(main==null){main=mainDao.selectMainById1(mainId);}
@@ -118,6 +119,10 @@ public class MainService {
         map.put("counts",counts);
         map.put("main",main);
         return map;
+    }
+    @Transactional
+    public Main selectMainById1(Integer mainId){
+        return mainDao.selectMainById1(mainId);
     }
 
     //增加用户已作答

@@ -7,7 +7,7 @@ function subRegister(){
 	var userName = $("#userName").val();
 	var email = $("#email").val();
 	var reg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
-    $.ajax({url:basePath+"user/register?loginName="+loginName,
+    $.ajax({url:basePath+"user/register?loginName="+loginName+"&email="+email,
              type: "GET",
              async:false,
 		     success:function(result){
@@ -16,7 +16,7 @@ function subRegister(){
         }
              }})
     if(date!=false){
-        alert(loginName+"该账号已被注册！请重新填写！")
+        alert(loginName+" "+email+"账号或邮箱已被注册！请重新填写！");
         return;
     }else
    if (loginName==""||loginName.length<5){

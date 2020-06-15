@@ -123,7 +123,8 @@
                                                 </div>
                                                 <br>
                                             </c:if>
-                                            </c:if>
+                                        </c:if>
+
                                     </c:forEach>
                                     <br />
                                 </td>
@@ -148,19 +149,13 @@
             </c:choose>
         </table>
         <div id = "send" class="input-group">
-            <input id="message" class="form-control" placeholder="请问您还有什么其他意见?" name="message" value="张三">
+            <input id="message" class="form-control" placeholder="请问您还有什么其他意见?" name="message">
             <input type="hidden" name="mainId" value="${requestScope.map.main.mainId}"/>
             <span class="input-group-btn"><button type="submit" class="btn btn-primary" onclick="return tijiao();" >交卷</button></span>
 
         </div>
     </form>
 </div>
-
-
-<!--加载尾部-->
-
-<jsp:include page="../footer.jsp"/>
-
 
 <script type="text/javascript">
     var basePath = '<%=basePath%>';

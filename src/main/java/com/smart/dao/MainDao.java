@@ -1,5 +1,6 @@
 package com.smart.dao;
 
+import com.smart.domain.Answer;
 import com.smart.domain.Main;
 import com.smart.domain.Message;
 import com.smart.domain.User;
@@ -27,6 +28,7 @@ public interface MainDao {
     List<Main> selectMainByPageAndUser(HashMap<String,Object> map);
     //通过mainId,UserId查询用户是否答过问卷
     Integer isTrueAnswer(@Param("mainId") Integer mainId, @Param("userId") Integer userId);
+
     //通过mainId获取获取问卷，问题，答案
     Main selectMainById(Integer mainId);
     //通过mainId获取空白问卷

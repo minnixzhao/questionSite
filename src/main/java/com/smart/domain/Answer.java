@@ -5,11 +5,14 @@ import java.util.Date;
 public class Answer {
     private Integer answerId;
     private Integer answerValue;   //回答次数
-    private String answerType;     //有无附件
     private String answerDesType;  //文字描述
-    private String answerText;     //附件路径
+    private Float answerSum;
     private Date answerCreateTime; //回答时间
     private Question question;     //答案对应的问题
+
+    public  Float getAnswerSum(){return answerSum;}
+
+    public void setAnswerSum(Float AnswerSum){ this.answerSum=answerSum;}
 
     public Integer getAnswerId() {
         return answerId;
@@ -27,28 +30,12 @@ public class Answer {
         this.answerValue = answerValue;
     }
 
-    public String getAnswerType() {
-        return answerType;
-    }
-
-    public void setAnswerType(String answerType) {
-        this.answerType = answerType;
-    }
-
     public String getAnswerDesType() {
         return answerDesType;
     }
 
     public void setAnswerDesType(String answerDesType) {
         this.answerDesType = answerDesType;
-    }
-
-    public String getAnswerText() {
-        return answerText;
-    }
-
-    public void setAnswerText(String answerText) {
-        this.answerText = answerText;
     }
 
     public Date getAnswerCreateTime() {
@@ -71,9 +58,8 @@ public class Answer {
         return "Answer{" +
                 "answerId=" + answerId +
                 ", answerValue=" + answerValue +
-                ", answerType='" + answerType + '\'' +
                 ", answerDesType='" + answerDesType + '\'' +
-                ", answerText='" + answerText + '\'' +
+                ", answerSum='" + answerSum  +
                 ", answerCreateTime=" + answerCreateTime +
                 ", question=" + question +
                 '}';

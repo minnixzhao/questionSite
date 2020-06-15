@@ -52,28 +52,22 @@
                         <th >
                             <div class="row">
                                 <div class="col-xs-12">
-                                    <c:if test="${question.quesType eq 'radio'}">
-                                        <h4 style="padding-left: 40px"><small class="question">问题 ${vs.index+1 }：${question.quesTitle }[单选]</small></h4>
-                                    </c:if>
-                                    <c:if test="${question.quesType eq 'check'}">
-                                        <h4 style="padding-left: 40px"><small class="question">问题 ${vs.index+1 }：${question.quesTitle }[多选]</small></h4>
-                                    </c:if>
+                                    <h4 style="padding-left: 40px"><small class="question">问题 ${vs.index+1 }：${question.quesTitle }[${question.quesType }]</small></h4>
                                 </div>
                             </div>
                         </th>
                     </tr>
                        <tr class="success a">
+                           <td style="padding-left: 40px">
+                               <br />
                         <c:choose>
                             <c:when test="${not empty question.answerList }">
-                                <td style="padding-left: 40px">
-                                    <br />
                                     <c:forEach items="${question.answerList}" var="answer" varStatus="vs">
-                                        <c:if test="${question.quesType eq 'radio'}"><%//单选 %>
-                                            <c:if test="${answer.answerType eq 'n'}">
+                                        <c:if test="${question.quesType eq 'radio'||question.quesType eq 'score'}"><%//单选 %>
                                                 <div class="row">
                                                     <div class="col-xs-5">
                                                         <label>
-                                                            <input type="radio" name="${question.quesId}" class="property check" value="${answer.answerId }"><span style="padding-right: 45px">${answer.answerDesType }</span>
+                                                            <input type="radio" name="${question.quesType}" class="property check" value="${answer.answerId }"><span style="padding-right: 45px">${answer.answerDesType }</span>
                                                         </label>
                                                     </div>
                                                     <div class="col-xs-5">
@@ -94,14 +88,12 @@
                                                     </div>
                                                 </div>
                                                 <br>
-                                            </c:if>
                                         </c:if>
                                         <c:if test="${question.quesType eq 'check'}"><%//多选 %>
-                                            <c:if test="${answer.answerType eq 'n'}">
                                                 <div class="row">
                                                     <div class="col-xs-5">
                                                         <label>
-                                                            <input type="checkbox" name="${question.quesId}" class="property check" value="${answer.answerId }"><span style="padding-right: 45px">${answer.answerDesType }</span>
+                                                            <input type="checkbox" name="${question.quesType}" class="property check" value="${answer.answerId }"><span style="padding-right: 45px">${answer.answerDesType }</span>
                                                         </label>
                                                     </div>
                                                     <div class="col-xs-5">
@@ -122,18 +114,46 @@
                                                     </div>
                                                 </div>
                                                 <br>
-                                            </c:if>
-                                            </c:if>
+                                        </c:if>
                                     </c:forEach>
                                     <br />
-                                </td>
                             </c:when>
                             <c:otherwise>
-                                <td style="padding-left: 40px">
-                                    <span>暂无任何答案</span>
-                                </td>
+                                <c:if test="${question.quesType eq 'text'}"><%//文本单 %>
+                                    <div class="row">
+                                        <label>
+                                            <input type="text" name="${question.quesType}" class="property check" value="">
+                                        </label>
+                                    </div>
+                                    <br>
+                                </c:if>
+                                <c:if test="${question.quesType eq 'texts'}"><%//文本多 %>
+                                    <div class="row">
+                                        <label>
+                                            <textarea name="${question.quesType}" class="property check" ></textarea>
+                                        </label>
+                                    </div>
+                                    <br>
+                                </c:if>
+                                <c:if test="${question.quesType eq 'number'}"><%//整数 %>
+                                    <div class="row">
+                                        <label>
+                                            <input type="number" name="${question.quesType}" class="property check" value="0">
+                                        </label>
+                                    </div>
+                                    <br>
+                                </c:if>
+                                <c:if test="${question.quesType eq 'decimal'}"><%//小数 %>
+                                    <div class="row">
+                                        <label>
+                                            <input type="number" step="0.01" name="${question.quesType}" class="property check" value="0.00">
+                                        </label>
+                                    </div>
+                                    <br>
+                                </c:if>
                             </c:otherwise>
                         </c:choose>
+                           </td>
                     </tr>
 
                 </c:forEach>
@@ -148,19 +168,13 @@
             </c:choose>
         </table>
         <div id = "send" class="input-group">
-            <input id="message" class="form-control" placeholder="请问您还有什么其他意见?" name="message" value="张三">
+            <input id="message" class="form-control" placeholder="请问您还有什么其他意见?" name="message">
             <input type="hidden" name="mainId" value="${requestScope.map.main.mainId}"/>
             <span class="input-group-btn"><button type="submit" class="btn btn-primary" onclick="return tijiao();" >交卷</button></span>
 
         </div>
     </form>
 </div>
-
-
-<!--加载尾部-->
-
-<jsp:include page="../footer.jsp"/>
-
 
 <script type="text/javascript">
     var basePath = '<%=basePath%>';
@@ -201,33 +215,26 @@
 
 
     function tijiao() {
-        var x=0;   //判断单选框true
-        var y=0;  //判断复选框
-        var k=0;
-        $(".a").each(function () {
-            k++
-            var this1=$(this);
-            this1.find(".radio").each(function () {
-                if($(this).is(":checked")==true){
-                    x++;
-                    return false;
+        var k = 0;
+        var ss = "";
+        var obj = document.getElementsByTagName("input");
+        for (var i = 0; i < obj.length; i++) {
+            if (obj[i].type == "radio" || obj[i].type == "check" || obj[i].type == "score") {
+                if (obj[i].name != ss) {
+                    if (k != 0) {
+                        alert("请填写完整问卷再提交！");
+                        return false;
+                    }
+                    ss = obj[i].name;
+                    k++;
                 }
-            })
-
-            this1.find(".check").each(function () {
-                if($(this).is(":checked")==true){
-                    y++;
-                    return false;
-                }
-            })
-
-        })
-
-        if(k!=x+y){
-        alert("请填写完整问卷再提交！")
-        return false; }
-
-
+                if(obj[i].checked)k=0;
+            }
+        }
+        if(k!=0){
+            alert("请填写完整问卷再提交！");
+            return false;
+        }
     }
 </script>
 </html>

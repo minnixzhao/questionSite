@@ -133,10 +133,6 @@ html,body {
 				</div>
 				<div class="form-group">
 					<div class="col-xs-6 link">
-						<p class="text-center remove-margin"><small>忘记密码？</small> <a href="javascript:void(0)" ><small>找回</small></a>
-						</p>
-					</div>
-					<div class="col-xs-6 link">
 						<p class="text-center remove-margin"><small>还没注册?</small> <a href="javascript:void(0)" onclick="register ()" ><small>注册</small></a>
 						</p>
 					</div>
@@ -168,7 +164,7 @@ function register (){
 					<div class="col-xs-12  ">
 						<div class="input-group">
 							<span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
-							<input type="text" name="loginName" id="loginName" class="form-control" placeholder="用户名" value="201626701121" maxlength="20" onfocus="$('#usernameInfo').show()" onblur="$('#usernameInfo').hide()" />
+							<input type="text" name="loginName" id="loginName" class="form-control" placeholder="用户名" value="vip888" maxlength="20" onfocus="$('#usernameInfo').show()" onblur="$('#usernameInfo').hide()" />
 						</div>
 					</div>
 					<div class="well" id="usernameInfo" style="display: none;">
@@ -204,7 +200,7 @@ function register (){
 					<div class="col-xs-12  ">
 						<div class="input-group">
 							<span class="input-group-addon"><span class="glyphicon glyphicon-tower"></span></span>
-							<input type="text" name="userName" id="userName" class="form-control" placeholder="姓名"value="陈志平" maxlength="20" onfocus="$('#wxnameInfo').show()" onblur="$('#wxnameInfo').hide()">
+							<input type="text" name="userName" id="userName" class="form-control" placeholder="姓名"value="长门有希" maxlength="20" onfocus="$('#wxnameInfo').show()" onblur="$('#wxnameInfo').hide()">
 						</div>
 					</div>
 					<div class="well" id="wxnameInfo" style="display: none;">
@@ -216,11 +212,11 @@ function register (){
 					<div class="col-xs-12  ">
 						<div class="input-group">
 							<span class="input-group-addon"><span class="glyphicon glyphicon-send"></span></span>
-							<input type="text" name="email" id="email" class="form-control" placeholder="邮箱" value="2771109447@qq.com"maxlength="100" onfocus="$('#emailInfo').show()" onblur="$('#emailInfo').hide()">
+							<input type="text" name="email" id="email" class="form-control" placeholder="邮箱" value="yuki1096@qq.com"maxlength="100" onfocus="$('#emailInfo').show()" onblur="$('#emailInfo').hide()">
 						</div>
 					</div>
 					<div class="well" id="emailInfo" style="display: none;">
-						提示:xxxxx@xx.com,这是找回密码的重要凭证！
+						提示:xxxxx@xx.com。
 					</div>
 				</div>
 

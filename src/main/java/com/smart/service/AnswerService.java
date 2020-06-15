@@ -32,9 +32,11 @@ public class AnswerService {
     public  void updateApplyValues(List<String> answerId){
         for(int i=0;i<answerId.size();i++){
                Answer answer=  answerDao.selectAnswerById(Integer.valueOf(answerId.get(i)));
+               //System.out.println(answerId.get(i));
+               if(answer!=null){
                    answer.setAnswerValue(answer.getAnswerValue()+1); //实现答案选择人数自增
                    answerDao.updateApplyValues(answer);   //修改答案点击数
-
+               }
         }
         Answer answer=answerDao.selectAnswerById(Integer.valueOf(answerId.get(0)));
         Question question=answer.getQuestion();
@@ -52,8 +54,7 @@ public class AnswerService {
             question.setQuesId(quesId);              //保存答案所在的问题id
             answer.setAnswerDesType(answerDesType);  //保存答案文本信息
             answer.setAnswerCreateTime(new Date());
-            answer.setAnswerType("n");
-            answer.setAnswerText("/");
+            answer.setAnswerSum((float)0);
             answer.setQuestion(question);
             k=k+answerDao.insertAnswer(answer);
 

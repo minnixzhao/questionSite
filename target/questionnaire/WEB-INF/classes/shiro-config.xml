@@ -45,7 +45,8 @@
                 /js/**=anon
                 /images/**=anon
                 <!--获取身份验证路径不需要身份认证,anon表示不需要身份，权限认证-->
-                /user/*=anon
+                /user/**=anon
+                /main/see/**=anon
                 <!--authc表示需要认证 没有进行身份认证是不能进行访问的-->
                 /**=authc
             </value>

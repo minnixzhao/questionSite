@@ -26,6 +26,10 @@ public class UserService {
     public User selectUserByLoginName(String loginName){
         return userDao.selectUserByLoginName(loginName);
     }
+
+    public User selectUserByEmail(String email){
+        return userDao.selectUserByEmail(email);
+    }
     //插入一条用户以及对应的角色
     @Transactional
     public void insertUser(User user,Integer role){

@@ -50,16 +50,21 @@ public class MainController {
     }
     /**填写问卷模块**/
     //单击问卷标题进入问卷调查
-    @RequiresRoles(value = "vip",logical = Logical.OR)
     @RequestMapping (value = "/see/{mainId}")
     public String seeQuestion(@PathVariable("mainId") Integer mainId, Model model, HttpSession session){
+        /*
+        * Main main1=mainService.selectMainById1(mainId);
+        Integer num=main1.getMainAnswer();
+        * */
         //获取登录用户信息
         User user= (User) session.getAttribute("user");
-        //查询用户是否答过问卷，答过为true，并且跳转至答过页面mainIsAnswer
-        Boolean b=mainService.isTrueAnswer(mainId ,user.getUserId());
-        if(b)
-        {
-            return "main/mainIsAnswer";
+        if(user!=null){
+            //查询用户是否答过问卷，答过为true，并且跳转至答过页面mainIsAnswer
+            Boolean b=mainService.isTrueAnswer(mainId ,user.getUserId());
+            if(b)
+            {
+                return "main/mainIsAnswer";
+            }
         }
         //获取问卷，包括question,answer;
         Map<String,Object> map= mainService.selectMainById(mainId);
@@ -76,12 +81,17 @@ public class MainController {
         Map<String, String[]> parm = request.getParameterMap();
         Set<Map.Entry<String, String[]>> entrySet = parm.entrySet();
         for (Map.Entry<String, String[]> entry : entrySet){
-            if("message".equals(entry.getKey())==false && "main".equals(entry.getKey()) ==false) {
+            if("radio".equals(entry.getKey()) || "check".equals(entry.getKey()) ||"score".equals(entry.getKey()) ) {
                 String[] answerIds = entry.getValue();
                 answerId.addAll(Arrays.asList(answerIds));
             }
         }
         User user= (User) session.getAttribute("user");
+        if(user==null){
+            user=new User();
+            user.setUserName("游客");
+            user.setUserId(0);
+        }
         //判断是否有额外建议，如有则入库
         if(message!=null&&message!=""){
             mainService.insertMessage(main,message,user.getUserName());

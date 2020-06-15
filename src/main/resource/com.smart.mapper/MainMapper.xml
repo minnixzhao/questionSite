@@ -91,11 +91,19 @@
     <select id="isTrueAnswer" parameterType="Integer" resultType="Integer">
         select umId from qu_user_main where  user_id=#{userId} and main_id=#{mainId}
     </select>
+
+    <select id="selectAnswerById" parameterType="Integer" resultType="Answer">
+        select * from qu_answer a
+        where a.ques_id=#{mainId}
+    </select>
+
     <!--查询问卷信息包括question,answer-->
     <select id="selectMainById" parameterType="Integer" resultMap="mainResultMapper">
-        select * from qu_main m,qu_question q,qu_answer a
-        where m.mainId=#{mainId} and m.mainId=q.main_id and q.quesId=a.ques_id
-        order by field(q.quesType,'radio','check')
+        select * from qu_main m,qu_question q
+        LEFT JOIN qu_answer a
+        ON q.quesId=a.ques_id
+        where m.mainId=#{mainId} and m.mainId=q.main_id;
+        order by field(q.quesType,'radio','check','text','texts','number','decimal','score')
     </select>
     <!--查询问卷信息包括question,answer-->
     <select id="selectMainById1" parameterType="Integer" resultMap="mainResultMapper">

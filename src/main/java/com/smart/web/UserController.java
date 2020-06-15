@@ -1,12 +1,10 @@
 package com.smart.web;
 
-import com.smart.domain.Main;
 import com.smart.domain.Role;
 import com.smart.domain.User;
 import com.smart.service.RoleService;
 import com.smart.service.UserService;
 import com.smart.tool.Page;
-import org.apache.ibatis.annotations.Param;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -19,10 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.security.Security;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,11 +47,12 @@ public class UserController {
     //用户是否被注册
     @RequestMapping(value = "/register",method =RequestMethod.GET)
     @ResponseBody
-    public Map<String,Boolean> register1(String  loginName) {
+    public Map<String,Boolean> register1(String  loginName, String email) {
         Map<String,Boolean> map=new HashMap<>();
         Boolean b;
-        User user=userService.selectUserByLoginName(loginName);
-        if (user!=null){b=true;}
+        User user1=userService.selectUserByLoginName(loginName);
+        User user2=userService.selectUserByEmail(email);
+        if (user1!=null||user2!=null){b=true;}
         else {b=false;}
         map.put("success",b);
         return map;

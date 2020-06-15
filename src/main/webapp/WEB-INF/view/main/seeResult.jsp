@@ -121,9 +121,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</table>
 	</div>
 
-	<!--加载尾部-->
-	<jsp:include page="../footer.jsp"/>
-
 	<script type="text/javascript">
 		var basePath = '<%=basePath%>';
 	</script>

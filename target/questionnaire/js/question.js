@@ -183,9 +183,21 @@ function submitAnswer(formid,urlparm){
 }
 //表单提交
 function submitFormById (formId){
-	if($("questionTitle1")==''||answerPro.num==1)
-	{alert("问题或答案未输入！")
-	return false;}
+	if(document.getElementById("questionTitle").value=="")
+		{alert("问题未输入！")
+		return false;}
+	if((document.getElementById("questionType").value=="check"||document.getElementById("questionType").value=="radio")&&answerPro.num==1)
+		{alert("选项未输入！")
+		return false;}
+	$('#'+formId).submit();
+}
+function submitFormByIdxg (formId){
+	if(document.getElementById("questionTitlexg").value=="")
+	{alert("问题未输入！")
+		return false;}
+	if((document.getElementById("questionTypexg").value=="check"||document.getElementById("questionTypexg").value=="radio")&&answerPro.num==1)
+	{alert("选项未输入！")
+		return false;}
 	$('#'+formId).submit();
 }
 //复制问卷
@@ -273,15 +285,20 @@ var answerPro = {
 }
 //增加答案
 function addAnswer() {
+		if(document.getElementById("questionType").value=="radio"||document.getElementById("questionType").value=="check"){
+			addAnswer_sub();
+		}
+}
+function addAnswer_sub() {
 	var guidr = guid();		//生成guid作为
 	$("#editAnswer").append("<div class='form-group' name='div_answers' id='div_answer"
-			+guidr+"'><label>答案"+answerPro.num+":</label>"
-			+"<div class='input-group'>"
-			+"<input class='form-control' name='"+guidr+"' type='text' />"
-			+"<div class='input-group-btn'>"
-			+"<buttion class='btn btn-primary' type='button' onclick=\"delAddAnswer('"
-			+guidr+"')\">删除</bution></div></div>"
-			+"</div>");
+		+guidr+"'><label>答案"+answerPro.num+":</label>"
+		+"<div class='input-group'>"
+		+"<input class='form-control' name='"+guidr+"' type='text' />"
+		+"<div class='input-group-btn'>"
+		+"<buttion class='btn btn-primary' type='button' onclick=\"delAddAnswer('"
+		+guidr+"')\">删除</bution></div></div>"
+		+"</div>");
 	answerPro.num++;		//答案编号自加1
 }
 
@@ -332,6 +349,11 @@ function openEditModelxg (questionId){
 }
 //增加答案
 function addAnswerxg() {
+	if(document.getElementById("questionTypexg").value=="radio"||document.getElementById("questionTypexg").value=="check"){
+		addAnswerxg_sub();
+	}
+}
+function addAnswerxg_sub() {
 	var guidr = guid();
 	$("#editAnswerxg").append("<div class='form-group' name='div_answersxg' id='div_answerxg"+guidr+"'><label>答案"+answerPro.num+":</label>"
 			+"<div class='input-group'>"

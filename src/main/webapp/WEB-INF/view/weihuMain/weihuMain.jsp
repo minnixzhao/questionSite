@@ -329,8 +329,6 @@
         </div>
     </div>
 </div>
-<!--尾部-->
-<jsp:include page="../footer.jsp"/>
 <script type="text/javascript">
     var basePath = '<%=basePath%>';
     var socketPath = '<%=socketPath%>';

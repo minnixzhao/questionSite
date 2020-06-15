@@ -13,6 +13,8 @@ import java.util.Set;
 public interface UserDao {
     //通过loginName获取user
     User selectUserByLoginName(String loginName);
+    //通过email
+    User selectUserByEmail(String email);
     //插入一名用户
     Integer insertUser(User user);
     //通过loginName获取角色

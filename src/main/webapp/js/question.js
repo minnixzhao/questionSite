@@ -273,8 +273,9 @@ var answerPro = {
 }
 //增加答案
 function addAnswer() {
-	var guidr = guid();		//生成guid作为
-	$("#editAnswer").append("<div class='form-group' name='div_answers' id='div_answer"
+	if($("questionType")=="check"||$("questionType")=="radio"){
+		var guidr = guid();		//生成guid作为
+		$("#editAnswer").append("<div class='form-group' name='div_answers' id='div_answer"
 			+guidr+"'><label>答案"+answerPro.num+":</label>"
 			+"<div class='input-group'>"
 			+"<input class='form-control' name='"+guidr+"' type='text' />"
@@ -282,7 +283,8 @@ function addAnswer() {
 			+"<buttion class='btn btn-primary' type='button' onclick=\"delAddAnswer('"
 			+guidr+"')\">删除</bution></div></div>"
 			+"</div>");
-	answerPro.num++;		//答案编号自加1
+		answerPro.num++;		//答案编号自加1
+	}
 }
 
 function delAddAnswer(num) {

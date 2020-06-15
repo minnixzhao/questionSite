@@ -29,9 +29,7 @@ String spdfDate = sdf.format(nowDate);
 	<div class="container">
 		您已经回答过该问题，不要重复提交哦，页面将于3秒关闭，如未自动关闭请手动点击<a href="javascript:void(0)" onclick="closepage()">这里</a>>.
 	</div>
-    <!--加载尾部-->
 
-    <jsp:include page="../footer.jsp"/>
     <script type="text/javascript">
 		var basePath = '<%=basePath%>';
 		var socketPath = '<%=socketPath%>';

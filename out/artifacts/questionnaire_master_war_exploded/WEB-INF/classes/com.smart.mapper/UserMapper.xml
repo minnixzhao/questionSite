@@ -40,6 +40,9 @@
     <select id="selectUserByLoginName" parameterType="String" resultType="user">
         select * from sys_user where loginName=#{loginName};
     </select>
+    <select id="selectUserByEmail" parameterType="String" resultType="user">
+        select * from sys_user where email=#{email};
+    </select>
     <!--通过loginName获取权限-->
     <select id="selectPermissionByLoginName" parameterType="String" resultType="String">
     select p.permissName from sys_role_user ru,sys_role_permiss rp,sys_user u,sys_role r,sys_permiss p

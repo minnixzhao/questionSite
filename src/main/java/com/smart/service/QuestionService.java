@@ -51,8 +51,7 @@ public class QuestionService {
             //新增答案入数据库
             if(k!=1){
                 answer.setAnswerCreateTime(new Date());
-                answer.setAnswerText("/");
-                answer.setAnswerType("n");
+                answer.setAnswerSum((float)0);
                 answer.setQuestion(question);
                 answerDao.insertAnswer(answer);
             }
@@ -73,22 +72,35 @@ public class QuestionService {
         main.setMainId(Integer.valueOf(map.get("mainId")[0]));
         question.setQuesTitle(map.get("questionTitle")[0]);
         question.setQuesType(map.get("questionType")[0]);
+        String ss=map.get("questionType")[0];
         question.setMain(main);
         question.setQuesCreateTime(new Date());
         questionDao.addQuestion(question); //增加问题
         //移除便于保存答案
+        //System.out.println(map.get("questionTitle")[0]);
         map.remove("mainId");
         map.remove("questionTitle");
         map.remove("questionType");
-        Set<Map.Entry<String,String[]>> entrySet=map.entrySet();
-        for(Map.Entry<String,String[]> entry:entrySet ){
-            Answer answer=new Answer();
-            answer.setAnswerCreateTime(new Date());
-            answer.setAnswerDesType(entry.getValue()[0]);
-            answer.setAnswerText("/");
-            answer.setAnswerType("n");
-            answer.setQuestion(question);
-            answerDao.insertAnswer(answer);  //保存答案
+        if(ss.equals("radio")||ss.equals("check")){
+            Set<Map.Entry<String,String[]>> entrySet=map.entrySet();
+            for(Map.Entry<String,String[]> entry:entrySet ){
+                Answer answer=new Answer();
+                answer.setAnswerCreateTime(new Date());
+                answer.setAnswerDesType(entry.getValue()[0]);
+                answer.setAnswerSum((float)0.0);
+                answer.setQuestion(question);
+                answerDao.insertAnswer(answer);  //保存答案
+            }
+        }
+        else if(ss.equals("score")){
+            for(int i=1;i<=7;i++){
+                Answer answer=new Answer();
+                answer.setAnswerCreateTime(new Date());
+                answer.setAnswerDesType(""+i);
+                answer.setAnswerSum((float)0);
+                answer.setQuestion(question);
+                answerDao.insertAnswer(answer);  //保存答案
+            }
         }
     }
     //删除一个问题及答案

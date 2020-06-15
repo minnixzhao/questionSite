@@ -1,6 +1,5 @@
 package com.smart.web;
 
-import com.smart.domain.Main;
 import com.smart.domain.Permission;
 import com.smart.domain.PermissionZtree;
 import com.smart.domain.Role;
