@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
     <%@ taglib uri="http://shiro.apache.org/tags" prefix="shiro" %>
+	<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
@@ -23,7 +24,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<table class="table">
 			<tr class="danger">
 				<th>
-					<h5 style="padding-left: 40px">${requestScope.map.main.mainTitle}</h5>
+					<h5 style="padding-left: 40px">${requestScope.map.main.mainTitle}  [共${requestScope.map.main.mainAnswer}人回答]</h5>
 				</th>
 			</tr>
 			<c:choose>
@@ -36,23 +37,52 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						</tr>
 						<tr class="success">
 							<c:choose>
-								<c:when test="${not empty question.answerList }">
-									<td ><%//答案开始咯 %>
+								<c:when test="${not empty question.answerList&&(question.quesType eq 'radio'||question.quesType eq 'check'||question.quesType eq 'score') }">
+									<td style="padding-left: 40px">
 									<br />
 									<c:forEach items="${question.answerList}" var="answer" varStatus="vs">
-												<blockquote>
-													<p style="padding-left: 40px">总共<b>${answer.answerValue }</b>个人选择</p>
-													<footer style="padding-left: 40px"><b>${answer.answerDesType }</b></footer>
-												</blockquote>
-
+										<div class="col-xs-5">
+											选项：${answer.answerDesType}
+										</div>
+										<div class="col-xs-5">
+											<div class="progress">
+												<c:if test="${answer.answerValue==0}">
+													<c:set var="count" value="${answer.answerValue }"></c:set>
+												</c:if>
+												<c:if test="${answer.answerValue!=0}">
+													<c:set var="count" value="${answer.answerValue*100/requestScope.map.main.mainAnswer }"></c:set>
+												</c:if>
+												<div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="${answer.answerValue }" aria-valuemin="0" aria-valuemax="100" style="width: <fmt:formatNumber type="number" value="${count }" pattern="0.00" minFractionDigits="0"></fmt:formatNumber>% ">
+													<span class="sr-only">${answer.answerValue }</span>
+												</div>
+											</div>
+										</div>
+										<div class="col-xs-2">
+											<h5><cite title="">${requestScope.map.main.mainAnswer}人/${answer.answerValue }人/<fmt:formatNumber type="number" value="${count }" pattern="0.00" minFractionDigits="2"></fmt:formatNumber>%</cite></h5>
+										</div>
 									</c:forEach>
 										<br />
 									</td>
 								</c:when>
 								<c:otherwise>
-									<td style="padding-left: 40px">
-										<span>暂无任何数据</span>
-									</td>
+									<c:choose >
+										<c:when test="${question.quesType eq 'number'||uestion.quesType eq 'decimal' }">
+											<td ><%//答案开始咯 %>
+												<br />
+												<c:forEach items="${question.answerList}" var="answer" varStatus="vs">
+													平均值：${answer.answerSum/answer.answerValue}
+
+												</c:forEach>
+												<br />
+											</td>
+										</c:when>
+										<c:otherwise>
+											<td style="padding-left: 40px">
+												<span>暂无任何数据</span>
+											</td>
+										</c:otherwise>
+									</c:choose>
+
 								</c:otherwise>
 							</c:choose>
 						</tr>

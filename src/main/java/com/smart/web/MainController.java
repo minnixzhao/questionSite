@@ -2,9 +2,11 @@ package com.smart.web;
 
 import com.smart.domain.Main;
 import com.smart.domain.Message;
+import com.smart.domain.Question;
 import com.smart.domain.User;
 import com.smart.service.AnswerService;
 import com.smart.service.MainService;
+import com.smart.service.QuestionService;
 import com.smart.tool.Page;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
@@ -30,6 +32,10 @@ public class MainController {
     @Autowired
     @Qualifier("answerService")
     private AnswerService answerService;
+    @Autowired
+    @Qualifier("questionService")
+    private QuestionService questionService;
+
 
     //登录验证成功跳转获取问卷显示在首页上
     @RequestMapping(value = "/",method = RequestMethod.GET)
@@ -52,10 +58,13 @@ public class MainController {
     //单击问卷标题进入问卷调查
     @RequestMapping (value = "/see/{mainId}")
     public String seeQuestion(@PathVariable("mainId") Integer mainId, Model model, HttpSession session){
-        /*
-        * Main main1=mainService.selectMainById1(mainId);
+
+        Main main1=mainService.selectMainById1(mainId);
         Integer num=main1.getMainAnswer();
-        * */
+        Integer max=main1.getTimes();
+        if(num>=max){
+            return "main/full";
+        }
         //获取登录用户信息
         User user= (User) session.getAttribute("user");
         if(user!=null){
@@ -65,6 +74,9 @@ public class MainController {
             {
                 return "main/mainIsAnswer";
             }
+        }
+        else if("y".equals(main1.getNeedRegister())){
+            return "main/noPermit";
         }
         //获取问卷，包括question,answer;
         Map<String,Object> map= mainService.selectMainById(mainId);
@@ -80,10 +92,16 @@ public class MainController {
         List<String> answerId = new ArrayList<>();
         Map<String, String[]> parm = request.getParameterMap();
         Set<Map.Entry<String, String[]>> entrySet = parm.entrySet();
+        int flag=-1;
+        List<Question> ll= questionService.selectQuestionByMainId(main.getMainId());
         for (Map.Entry<String, String[]> entry : entrySet){
+            flag++;
             if("radio".equals(entry.getKey()) || "check".equals(entry.getKey()) ||"score".equals(entry.getKey()) ) {
                 String[] answerIds = entry.getValue();
                 answerId.addAll(Arrays.asList(answerIds));
+            }
+            else if("number".equals(entry.getKey()) || "decimal".equals(entry.getKey())){
+                answerService.updateApplyNumber(Integer.parseInt(entry.getValue()[0]),ll.get(flag).getQuesId());
             }
         }
         User user= (User) session.getAttribute("user");
@@ -132,17 +150,20 @@ public class MainController {
     }
     //新建一份问卷
     @RequestMapping(value = "/create",method = RequestMethod.POST)
-    public String Create(String mainTitle,String mainEndTime,HttpSession session) throws ParseException {
+    public String Create(String mainTitle,String mainEndTime,String times,String register_value,HttpSession session) throws ParseException {
         Main main=new Main();
         main.setMainTitle(mainTitle); //问卷标题
         main.setMainCreateTime(new Date()); //创建时间
+        main.setTimes(Integer.parseInt(times));
+        //System.out.println(register);
+        main.setNeedRegister(register_value);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         main.setMainEndTime(sdf.parse(mainEndTime));   //截止时间
         main.setMainIsuse("n");        //是否发布
         User user= (User) session.getAttribute("user");
         main.setMainCreateUser(user.getUserName()); //问卷创始人
         mainService.insertMain(main);
-        return "redirect:/main/weihu";
+        return "redirect:/main/wode";
     }
 
     //删除一份问卷

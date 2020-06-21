@@ -73,12 +73,12 @@
                         minDate:"2000-01-01",
                         okfun:function(val){alert(val)}
                     })
-                </script>
+                </script>    <shiro:hasPermission name="/questionnaire/create">
+
             </div>
         </div>
     </shiro:hasPermission>
     <!--新建问卷-->
-    <shiro:hasPermission name="/questionnaire/create">
         <div class="collapse" id="collapseNewQuestion">
             <div class="well">
                 <form  action="<%=basePath %>main/create" class="form-inline" method="post" id="newQuestion">
@@ -89,6 +89,17 @@
                     <div class="form-group date" id="datetimepicker">
                         <label for="mainEndtime">截止日期:</label>
                         <input type="text" class="form-control" id="mainEndTime" name="mainEndTime" readonly="readonly">
+                    </div>
+                    <div class="form-group">
+                        <label for="times">问卷最大回答次数:</label>
+                        <input class="form-control" id="times" name="times" type="number" value="100"  />
+                    </div>
+                    <div class="form-group">
+                        <label for="times">是否要注册:</label>
+                        <input class="form-control" id="register" name="register" type="checkbox"   />
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control" id="register_value" name="register_value" type="input" style="visibility: hidden"   />
                     </div>
                     <script type="text/javascript">
                         jeDate({
@@ -109,28 +120,37 @@
         <table class="table table-bordered table-hover">
             <tr class="danger">
                 <th>
-                    <h5 >序号:</h5>
+                    <h5 >序号</h5>
                 </th>
                 <th>
-                    <h5 >选择:</h5>
+                    <h5 >选择</h5>
                 </th>
                 <th>
-                    <h5 >问卷标题:</h5>
+                    <h5 >问卷标题</h5>
                 </th>
                 <th>
-                    <h5 >创建时间:</h5>
+                    <h5 >创建时间</h5>
                 </th>
                 <th>
-                    <h5 >截止时间:</h5>
+                    <h5 >截止时间</h5>
                 </th>
                 <th>
-                    <h5 >是否发布:</h5>
+                    <h5 >最大回答次数</h5>
                 </th>
                 <th>
-                    <h5 >发布人:</h5>
+                    <h5 >已回答</h5>
+                </th>
+                <th>
+                    <h5 >需注册否</h5>
+                </th>
+                <th>
+                    <h5 >是否发布</h5>
+                </th>
+                <th>
+                    <h5 >发布人</h5>
                 </th>
                 <th width="256px">
-                    <h5 >操作:</h5>
+                    <h5 >操作</h5>
                 </th>
             </tr>
             <c:choose>
@@ -151,6 +171,23 @@
                             </td>
                             <td>
                                 <span><fmt:formatDate pattern="yyyy-MM-dd" value="${item.mainEndTime }"/></span>
+                            </td>
+
+                            <td>
+                                <span>${item.times }</span>
+                            </td>
+                            <td>
+                                <span>${item.mainAnswer }</span>
+                            </td>
+                            <td>
+								<span>
+									<c:if test="${item.needRegister eq 'y' }">
+                                        需
+                                    </c:if>
+									<c:if test="${item.needRegister eq 'n' }">
+                                        不需
+                                    </c:if>
+								</span>
                             </td>
                             <td>
 								<span>
@@ -347,6 +384,14 @@
 
         var turnPage=document.getElementById("turnPage").value;
 
+        if(turnPage==null){
+
+            alert("请输入页码");
+
+            return false;
+
+        }
+
         if(turnPage>${requestScope.newPage.totalPage}){
 
             alert("对不起已超过最大页数");
@@ -355,7 +400,7 @@
 
         }
 
-        var shref="<%=basePath %>main/weihu/?currentPage="+turnPage;
+        var shref="<%=basePath %>main/wode/?currentPage="+turnPage;
 
         window.location.href=shref;
     }

@@ -24,4 +24,8 @@
     <delete id="deleteQuestionById" parameterType="Integer">
       delete from qu_question where quesId=#{quesId}
     </delete>
+
+    <select id="selectQuestionByMainId" parameterType="Integer" resultType="question">
+        select * from qu_question where main_id=#{MainId}
+    </select>
 </mapper>

@@ -1,6 +1,9 @@
 //增加问卷需要写标题
 function newQuestion () {
     var a = $("#mainTitle").val();
+    if(document.getElementById("register").checked==true)document.getElementById("register_value").setAttribute("value","y");
+    else document.getElementById("register_value").setAttribute("value","n");
+    alert($("#register_value").val());
     if (a == null || a == "") {
         alert('新建一份问卷调查，先填写标题。')
         return false;
@@ -244,13 +247,17 @@ function editQuestionMainTitle (mainId){
 	
 	var MainTitle = $("#mainTitleInput").val();
 	var MainEndTime = $("#mainEndtimeInput").val();
-	
+	var times=$("#times").val();
+	var register_v="n";
+	if(document.getElementById("register").checked==true)register_v="y";
 	$.ajax({
 		url:basePath+"question/editMain",
 		type:'POST',
 		data:{mainId:mainId,
 			mainTitle:MainTitle,
-			mainEndTime:MainEndTime
+			mainEndTime:MainEndTime,
+			times:times,
+			register:register_v
 		},
 		success:function (data){
 			if (data.success){

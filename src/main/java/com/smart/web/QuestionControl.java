@@ -48,12 +48,14 @@ public class QuestionControl {
     //修改并保存一份问卷
     @RequestMapping(value = "/editMain",method =RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> editMain(Integer mainId, String mainTitle, String mainEndTime){
+    public Map<String, Object> editMain(Integer mainId, String mainTitle, String mainEndTime,String times,String register){
         Map<String,Object> map=new HashMap<>();
         try {
             Main main=new Main();
             main.setMainId(mainId);
             main.setMainTitle(mainTitle);
+            main.setTimes(Integer.parseInt(times));
+            main.setNeedRegister(register);
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             main.setMainEndTime(sdf.parse(mainEndTime));
             map.put("success",mainService.updateMain(main));  //修改是否成功

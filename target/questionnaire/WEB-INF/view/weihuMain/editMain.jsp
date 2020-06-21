@@ -27,7 +27,7 @@
 <jsp:include page="../navigation.jsp"/>
 <div class="container">
 	<a class="btn btn-primary" href="javascript:void(0)" onclick="openEditModel()" >增加问题</a>
-	<a class="btn btn-success" href="<%=basePath %>main/weihu" target="_self" >返回</a>
+	<a class="btn btn-success" href="<%=basePath %>main/wode" target="_self" >返回</a>
 	<table class="table">
 		<tr class="danger">
 			<th>
@@ -42,6 +42,14 @@
 							<div class="form-group">
 								<label for="mainEndtimeInput">截止时间:</label>
 								<input class="form-control" id="mainEndtimeInput" name="mainEndTime" type="text" readonly="readonly" value='<fmt:formatDate pattern="yyyy-MM-dd" value="${requestScope.map.main.mainEndTime }"/>' />
+							</div>
+							<div class="form-group">
+								<label for="times">问卷最大回答次数:</label>
+								<input class="form-control" id="times" name="times" type="number" value="100"  />
+							</div>
+							<div class="form-group">
+								<label for="times">是否要注册:</label>
+								<input class="form-control" id="register" name="register" type="checkbox"   />
 							</div>
 						</form>
 						<script type="text/javascript">

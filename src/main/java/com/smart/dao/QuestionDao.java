@@ -1,6 +1,9 @@
 package com.smart.dao;
 
+import com.smart.domain.Answer;
 import com.smart.domain.Question;
+
+import java.util.List;
 
 public interface QuestionDao {
     //通过quesId获取问题
@@ -13,4 +16,6 @@ public interface QuestionDao {
     Integer deleteQuestion(Integer mainId);
     //通过quesId删除一个问题及答案
     Integer deleteQuestionById(Integer quesId);
+
+    List<Question> selectQuestionByMainId(Integer MainId);
 }

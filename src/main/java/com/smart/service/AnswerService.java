@@ -44,6 +44,12 @@ public class AnswerService {
         main.setMainAnswer(main.getMainAnswer()+1);  //实现问卷回答人数自增
         mainDao.updateMainAnswer(main);        //修改问卷答题人数//自增一次即可
     }
+
+    @Transactional
+    public  void updateApplyNumber(Integer changeNum,Integer quesId){
+        answerDao.updateApplyNumber(changeNum,quesId);
+    }
+
     //保存答案
     @Transactional
     public boolean insertAnswer(String[] answerText,Integer quesId,Integer answerNum){
@@ -54,7 +60,7 @@ public class AnswerService {
             question.setQuesId(quesId);              //保存答案所在的问题id
             answer.setAnswerDesType(answerDesType);  //保存答案文本信息
             answer.setAnswerCreateTime(new Date());
-            answer.setAnswerSum((float)0);
+            answer.setAnswerSum((double)0);
             answer.setQuestion(question);
             k=k+answerDao.insertAnswer(answer);
 

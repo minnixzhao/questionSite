@@ -25,7 +25,7 @@ CREATE TABLE `qu_answer`  (
   `answerId` int(11) NOT NULL AUTO_INCREMENT,
   `answerValue` int(11) DEFAULT 0 COMMENT '回答次数',
   `answerDesType` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '文字描述',
-  `answerSum` float  DEFAULT 0 COMMENT '回答的值总和',
+  `answerSum` decimal(7,2)  DEFAULT 0 COMMENT '回答的值总和',
   `answerCreateTime` datetime(0) DEFAULT NULL COMMENT '回答时间',
   `ques_id` int(11) DEFAULT NULL COMMENT '(外键)问题表主键',
   PRIMARY KEY (`answerId`) USING BTREE
@@ -68,6 +68,8 @@ CREATE TABLE `qu_main`  (
   `mainCreateTime` datetime(0) DEFAULT NULL COMMENT '问卷创建时间',
   `mainIsuse` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '是否使用',
   `mainEndTime` date DEFAULT NULL COMMENT '问卷截止时间',
+  `times` int(11) NOT NULL COMMENT '最大回答次数',
+  `needRegister` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '是否需要注册',
   `mainCreateUser` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '问卷创建人',
   `mainAnswer` int(11) DEFAULT 0 COMMENT '作答问卷总人数',
   PRIMARY KEY (`mainId`) USING BTREE
@@ -76,11 +78,11 @@ CREATE TABLE `qu_main`  (
 -- ----------------------------
 -- Records of qu_main
 -- ----------------------------
-INSERT INTO `qu_main` VALUES (1, '关于大学生是否恋爱问卷调查', '2020-05-01 11:48:52', 'y', '2020-07-01', '凉宫春日', 0);
-INSERT INTO `qu_main` VALUES (2, '对软件工程专业的看法', '2020-05-01 11:52:07', 'y', '2020-07-28', '阿虚', 0);
-INSERT INTO `qu_main` VALUES (3, '大学生睡眠质量统计', '2020-05-02 11:54:16', 'y', '2020-07-25', '凉宫春日', 0);
-INSERT INTO `qu_main` VALUES (4, '网络对大学生的影响', '2020-05-02 11:32:51', 'n', '2020-12-31', '阿虚', 0);
-INSERT INTO `qu_main` VALUES (5, '关于大学生学习的调查', '2020-06-02 11:32:51', 'n', '2020-12-31', '阿虚', 0);
+INSERT INTO `qu_main` VALUES (1, '关于大学生是否恋爱问卷调查', '2020-05-01 11:48:52', 'y', '2020-07-01',100,'y', '凉宫春日', 0);
+INSERT INTO `qu_main` VALUES (2, '对软件工程专业的看法', '2020-05-01 11:52:07', 'y', '2020-07-28', 100,'y','阿虚', 0);
+INSERT INTO `qu_main` VALUES (3, '大学生睡眠质量统计', '2020-05-02 11:54:16', 'y', '2020-07-25', 100,'y','凉宫春日', 0);
+INSERT INTO `qu_main` VALUES (4, '网络对大学生的影响', '2020-05-02 11:32:51', 'n', '2020-12-31', 100,'y','阿虚', 0);
+INSERT INTO `qu_main` VALUES (5, '关于大学生学习的调查', '2020-06-02 11:32:51', 'n', '2020-12-31', 100,'y','阿虚', 0);
 
 -- ----------------------------
 -- Table structure for qu_message

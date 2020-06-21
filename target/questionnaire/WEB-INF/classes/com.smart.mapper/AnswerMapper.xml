@@ -7,7 +7,7 @@
         <id property="answerId" column="answerId"/>
         <result property="answerValue" column="answerValue"/>
         <result property="answerDesType" column="answerDesType"/>
-        <result property="answerSum" column="answerText"/>
+        <result property="answerSum" column="answerSum"/>
         <result property="answerCreateTime" column="answerCreateTime"/>
         <!--一个答案对应一个问题-->
         <association property="question" javaType="question">
@@ -21,6 +21,7 @@
                 <result property="mainTitle" column="mainTitle"/>
                 <result property="mainIsuse" column="mainIsuse"/>
                 <result property="mainCreateTime" column="mainCreateTime"/>
+                <result property="needRegister" column="needRegister"/>
                 <result property="mainEndTime" column="mainEndTime"/>
                 <result property="mainCreateUser" column="mainCreateUser"/>
                 <result property="mainAnswer" column="mainAnswer"/>
@@ -40,9 +41,15 @@
     <update id="updateApplyValues" parameterType="answer">
         update qu_answer set answerValue=#{answerValue} where answerId=#{answerId}
     </update>
+
+    <!--修改答案answerValue字段-->
+    <update id="updateApplyNumber">
+        update qu_answer set answerSum=(answerSum+#{changeNum}),answerValue=(1+answerValue) where ques_id=#{quesId}
+    </update>
+
     <!--插入一份答案-->
     <insert id="insertAnswer" parameterType="answer" >
-        insert into qu_answer (answerType,answerDesType,answerText,answerCreateTime,ques_id) values (#{answerType},#{answerDesType},#{answerText},#{answerCreateTime},#{question.quesId});
+        insert into qu_answer (answerDesType,answerSum,answerCreateTime,ques_id) values (#{answerDesType},0,#{answerCreateTime},#{question.quesId});
     </insert>
     <!--更新答案-->
     <update id="updateAnswerById" parameterType="answer" >

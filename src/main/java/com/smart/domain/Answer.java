@@ -6,13 +6,13 @@ public class Answer {
     private Integer answerId;
     private Integer answerValue;   //回答次数
     private String answerDesType;  //文字描述
-    private Float answerSum;
+    private Double answerSum;
     private Date answerCreateTime; //回答时间
     private Question question;     //答案对应的问题
 
-    public  Float getAnswerSum(){return answerSum;}
+    public  Double getAnswerSum(){return answerSum;}
 
-    public void setAnswerSum(Float AnswerSum){ this.answerSum=answerSum;}
+    public void setAnswerSum(Double AnswerSum){ this.answerSum=AnswerSum;}
 
     public Integer getAnswerId() {
         return answerId;

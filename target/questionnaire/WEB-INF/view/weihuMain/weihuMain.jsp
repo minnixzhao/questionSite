@@ -51,9 +51,9 @@
                     <label for="mainTitleSS">问卷标题：</label>
                     <input name="mainTitle" id="mainTitleSS" type="text" class="form-control" placeholder=""  />
                     <label for="mainCreatSS">创建时间：</label>
-                    <input name="mainCreateTime" id="mainCreatSS" type="text" class="form-control" value="2019-01-01"  />
+                    <input name="mainCreateTime" id="mainCreatSS" type="text" class="form-control" value="2020-06-01"  />
                     <label for="mainEndtimeSS">截止时间：</label>
-                    <input name="mainEndTime" id="mainEndtimeSS" type="text" class="form-control" value="2020-01-01"  />
+                    <input name="mainEndTime" id="mainEndtimeSS" type="text" class="form-control" value="2021-01-01"  />
                     <button class="btn btn-primary" type="submit">搜索</button>
                 </form>
                 <script type="text/javascript">
@@ -89,6 +89,18 @@
                     <div class="form-group date" id="datetimepicker">
                         <label for="mainEndtime">截止日期:</label>
                         <input type="text" class="form-control" id="mainEndTime" name="mainEndTime" readonly="readonly" value="2020-01-01">
+                    </div>
+                    <div class="form-group">
+                        <label for="times">问卷最大回答次数:</label>
+                        <input class="form-control" id="times" name="times" type="number" value="100"  />
+                    </div>
+                    <div class="form-group">
+                        <label for="times">是否要注册:</label>
+                        <input class="form-control" id="register" name="register" type="checkbox"   />
+                    </div>
+                    <div class="form-group">
+                        <label for="times">是否要注册:</label>
+                        <input class="form-control" id="register_value" name="register_value" type="input" style="visibility: hidden"   />
                     </div>
                     <script type="text/javascript">
                         jeDate({

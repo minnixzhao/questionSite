@@ -6,8 +6,10 @@
     <resultMap id="mainResultMapper" type="main">
         <id property="mainId" column="mainId"/>
         <result property="mainTitle" column="mainTitle"/>
+        <result property="times" column="times"/>
         <result property="mainIsuse" column="mainIsuse"/>
         <result property="mainCreateTime" column="mainCreateTime"/>
+        <result property="needRegister" column="needRegister"/>
         <result property="mainEndTime" column="mainEndTime"/>
         <result property="mainCreateUser" column="mainCreateUser"/>
         <result property="mainAnswer" column="mainAnswer"/>
@@ -21,9 +23,8 @@
             <collection property="answerList" ofType="answer">
                 <id property="answerId" column="answerId"/>
                 <result property="answerValue" column="answerValue"/>
-                <result property="answerType" column="answerType"/>
                 <result property="answerDesType" column="answerDesType"/>
-                <result property="answerText" column="answerText"/>
+                <result property="answerSum" column="answerSum"/>
                 <result property="answerCreateTime" column="answerCreateTime"/>
             </collection>
         </collection>
@@ -123,7 +124,7 @@
     </update>
      <!--新建一份问卷-->
     <insert id="insertMain" parameterType="main" useGeneratedKeys="true" keyProperty="mainId">
-        insert into qu_main (mainTitle,mainCreateTime,mainIsuse,mainEndTime,mainCreateUser) values (#{mainTitle},#{mainCreateTime},#{mainIsuse},#{mainEndTime},#{mainCreateUser});
+        insert into qu_main (mainTitle,mainCreateTime,mainIsuse,mainEndTime,times,needRegister,mainCreateUser) values (#{mainTitle},#{mainCreateTime},#{mainIsuse},#{mainEndTime},#{times},#{needRegister},#{mainCreateUser});
     </insert>
     <!--修改问卷-->
     <update id="updateMain" >
@@ -137,6 +138,9 @@
         </if>
             <if test="mainIsuse!=null">
                 mainIsuse=#{mainIsuse},
+            </if>
+            <if test="needRegister!=null">
+                needRegister=#{needRegister},
             </if>
         </set>
          where mainId=#{mainId} ;

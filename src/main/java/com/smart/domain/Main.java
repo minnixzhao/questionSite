@@ -11,7 +11,9 @@ public class Main {
     private Date  mainCreateTime;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date  mainEndTime;
+    private Integer times; //最大回答次数
     private String mainIsuse;
+    private String needRegister;
     private String mainCreateUser;
     private Integer mainAnswer;  //回答人数
     private List<Question> questionList;
@@ -31,6 +33,13 @@ public class Main {
     public void setMainIsuse(String mainIsuse) {
         this.mainIsuse = mainIsuse;
     }
+
+    public Integer getTimes(){return times;}
+
+    public void setTimes(Integer times){this.times=times;}
+
+    public String getNeedRegister(){return needRegister;}
+    public void setNeedRegister(String needRegister){this.needRegister=needRegister;}
 
     public String getMainTitle() {
         return mainTitle;

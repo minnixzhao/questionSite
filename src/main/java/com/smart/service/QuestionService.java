@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -25,6 +26,15 @@ public class QuestionService {
     public Question selectQuestionById(Integer quesId){
         return questionDao.selectQuestionById(quesId);
     }
+    public List<Question> selectQuestionByMainId(Integer MainId){return questionDao.selectQuestionByMainId(MainId);}
+    //删除一个问题及答案
+    @Transactional
+    public boolean deleteQuestionById(Integer quesId){
+        Integer k= questionDao.deleteQuestionById(quesId);
+        Integer n= answerDao.deleteAnswer(quesId);
+        if(k!=0&&n!=0){return  true;}
+        else {return  false;}
+    }
     //通过quesId修改问题及答案
     @Transactional
     public void updateQuestionById(Map<String,String[]> map){
@@ -38,6 +48,7 @@ public class QuestionService {
         map.remove("mainId");
         map.remove("questionTitle");
         map.remove("questionType");
+        Integer n= answerDao.deleteAnswer(Integer.parseInt(map.get("questionId")[0]));
         map.remove("questionId");
         Set<Map.Entry<String,String[]>> entryset=map.entrySet();  //获取map中键值对的set集合
         for(Map.Entry<String,String[]> entry:entryset){
@@ -46,15 +57,12 @@ public class QuestionService {
                 answer.setAnswerId(Integer.valueOf(entry.getKey()));           //保存答案Id
             }
             answer.setAnswerDesType(entry.getValue()[0]);                     //保存答案
-            Integer k= answerDao.updateAnswerById(answer);                   //修改答案
 
-            //新增答案入数据库
-            if(k!=1){
                 answer.setAnswerCreateTime(new Date());
-                answer.setAnswerSum((float)0);
+                answer.setAnswerSum((double)0);
                 answer.setQuestion(question);
                 answerDao.insertAnswer(answer);
-            }
+
         }
 
     }
@@ -87,7 +95,7 @@ public class QuestionService {
                 Answer answer=new Answer();
                 answer.setAnswerCreateTime(new Date());
                 answer.setAnswerDesType(entry.getValue()[0]);
-                answer.setAnswerSum((float)0.0);
+                answer.setAnswerSum((double)0.0);
                 answer.setQuestion(question);
                 answerDao.insertAnswer(answer);  //保存答案
             }
@@ -97,18 +105,18 @@ public class QuestionService {
                 Answer answer=new Answer();
                 answer.setAnswerCreateTime(new Date());
                 answer.setAnswerDesType(""+i);
-                answer.setAnswerSum((float)0);
+                answer.setAnswerSum((double)0);
                 answer.setQuestion(question);
                 answerDao.insertAnswer(answer);  //保存答案
             }
         }
-    }
-    //删除一个问题及答案
-    @Transactional
-    public boolean deleteQuestionById(Integer quesId){
-       Integer k= questionDao.deleteQuestionById(quesId);
-       Integer n= answerDao.deleteAnswer(quesId);
-       if(k!=0&&n!=0){return  true;}
-       else {return  false;}
+        else if(ss.equals("number")||ss.equals("decimal")){
+            Answer answer=new Answer();
+            answer.setAnswerCreateTime(new Date());
+            answer.setAnswerDesType("number");
+            answer.setAnswerSum((double)0);
+            answer.setQuestion(question);
+            answerDao.insertAnswer(answer);
+        }
     }
 }

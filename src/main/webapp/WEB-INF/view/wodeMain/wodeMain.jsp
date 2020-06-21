@@ -127,6 +127,9 @@
                     <h5 >是否发布:</h5>
                 </th>
                 <th>
+                    <h5 >最大回答次数:</h5>
+                </th>
+                <th>
                     <h5 >发布人:</h5>
                 </th>
                 <th width="256px">
@@ -152,6 +155,11 @@
                             <td>
                                 <span><fmt:formatDate pattern="yyyy-MM-dd" value="${item.mainEndTime }"/></span>
                             </td>
+
+                            <td>
+                                <span>${item.times }</span>
+                            </td>
+
                             <td>
 								<span>
 									<c:if test="${item.mainIsuse eq 'y' }">

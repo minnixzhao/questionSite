@@ -35,7 +35,7 @@ public class MainService {
         //封装当前页数
         newPage.setCurrentPage(page.getCurrentPage());
         //封装每页显示的数据
-        int pageSize=5;
+        int pageSize=10;
         newPage.setPageSize(pageSize);
         //封装总记录数
         int totalCount=mainDao.selectMainCount();
@@ -62,7 +62,7 @@ public class MainService {
         //封装当前页数
         newPage.setCurrentPage(page.getCurrentPage());
         //封装每页显示的数据
-        int pageSize=5;
+        int pageSize=10;
         newPage.setPageSize(pageSize);
         //封装总记录数
         int totalCount=mainDao.selectMainCount1();
@@ -108,6 +108,7 @@ public class MainService {
                     //System.out.println(question.getQuesType());
                     Integer count = 0;
                     for (Answer answer : question.getAnswerList()) {
+                        //System.out.println(answer.getAnswerSum());
                         count = count + answer.getAnswerValue();
                     }
                     counts.put(question.getQuesId(), count);
@@ -221,7 +222,7 @@ public class MainService {
         //封装当前页数
         newPage.setCurrentPage(page.getCurrentPage());
         //封装每页显示的数据
-        int pageSize=2;
+        int pageSize=10;
         newPage.setPageSize(pageSize);
         //封装总记录数
         int totalCount=mainDao.selectMainCount2(mainTitle,mainCreateTime,mainEndTime);
@@ -250,7 +251,7 @@ public class MainService {
         //封装当前页数
         newPage.setCurrentPage(page.getCurrentPage());
         //封装每页显示的数据
-        int pageSize=2;
+        int pageSize=10;
         newPage.setPageSize(pageSize);
         //封装总记录数
         int totalCount=mainDao.selectMainCount3(user);

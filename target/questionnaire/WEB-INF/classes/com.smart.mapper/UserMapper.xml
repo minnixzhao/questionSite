@@ -15,6 +15,7 @@
             <id column="mainId" property="mainId"/>
             <result column="mainTitle" property="mainTitle"/>
             <result column="mainCreateTime" property="mainCreateTime"/>
+            <result property="needRegister" column="needRegister"/>
             <result column="mainEndTime" property="mainEndTime"/>
             <result column="mainCreateUser" property="mainCreateUser"/>
             <result column="mainAnswer" property="mainAnswer"/>

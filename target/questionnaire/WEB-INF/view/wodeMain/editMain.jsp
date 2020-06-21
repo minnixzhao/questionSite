@@ -27,7 +27,7 @@ String spdfDate = sdf.format(nowDate);
 <jsp:include page="../navigation.jsp"/>
 	<div class="container">
 		<a class="btn btn-primary" href="javascript:void(0)" onclick="openEditModel()" >增加问题</a>
-		<a class="btn btn-success" href="<%=basePath %>main/weihu" target="_self" >返回</a>
+		<a class="btn btn-success" href="<%=basePath %>main/wode" target="_self" >返回</a>
 		<table class="table">
 			<tr class="danger">
 				<th>
@@ -138,7 +138,7 @@ String spdfDate = sdf.format(nowDate);
 					</div>
 					<div class="modal-footer">
 						<button class="btn btn-default" data-dismiss="modal">关闭</button>
-						<button class="btn btn-primary" onclick="deleteQuestion()">确定</button>
+						<button class="btn btn-primary" onclick="deleteQuestion()" data-dismiss="modal">确定</button>
 					</div>
 				</div>
 			</div>

@@ -115,6 +115,22 @@
                                                 </div>
                                                 <br>
                                         </c:if>
+                                        <c:if test="${question.quesType eq 'number'}"><%//整数 %>
+                                            <div class="row">
+                                                <label>
+                                                    <input type="number" name="${question.quesType}" class="property check" value="0">
+                                                </label>
+                                            </div>
+                                            <br>
+                                        </c:if>
+                                        <c:if test="${question.quesType eq 'decimal'}"><%//小数 %>
+                                            <div class="row">
+                                                <label>
+                                                    <input type="number" step="0.01" name="${question.quesType}" class="property check" value="0.00">
+                                                </label>
+                                            </div>
+                                            <br>
+                                        </c:if>
                                     </c:forEach>
                                     <br />
                             </c:when>
@@ -131,22 +147,6 @@
                                     <div class="row">
                                         <label>
                                             <textarea name="${question.quesType}" class="property check" ></textarea>
-                                        </label>
-                                    </div>
-                                    <br>
-                                </c:if>
-                                <c:if test="${question.quesType eq 'number'}"><%//整数 %>
-                                    <div class="row">
-                                        <label>
-                                            <input type="number" name="${question.quesType}" class="property check" value="0">
-                                        </label>
-                                    </div>
-                                    <br>
-                                </c:if>
-                                <c:if test="${question.quesType eq 'decimal'}"><%//小数 %>
-                                    <div class="row">
-                                        <label>
-                                            <input type="number" step="0.01" name="${question.quesType}" class="property check" value="0.00">
                                         </label>
                                     </div>
                                     <br>
